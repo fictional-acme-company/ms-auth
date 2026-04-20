@@ -1,0 +1,27 @@
+name: DevXP Analyze on Main Push
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  devxp-analyze:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 2
+
+      - name: Submit metrics to DevXP
+        uses: Karimov-Labs/dev-xp-analyzer@main
+        with:
+          api-token: ${{ secrets.DEVXP_API_KEY }}
+          api-endpoint: https://push.devxp.net
+          event-type: push
+          include-file-content: 'false'
+          mask-identities: 'false'
